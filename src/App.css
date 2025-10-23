@@ -1,0 +1,40 @@
+.chat-container {
+  width: 400px;
+  margin: 50px auto;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+.ai-bubble {
+  background-color: #ffe4e1;
+  padding: 15px;
+  border-radius: 20px;
+  margin: 10px 0;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.options button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffb6c1;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.options button:hover {
+  background-color: #ff69b4;
+}
+
+.step-indicator {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #888;
+}
