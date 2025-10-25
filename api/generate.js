@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       A realistic photo of ${userData.color} tone bouquet for ${userData.occasion}.
       Include flowers suitable for ${userData.type}.
       `,
-      size: "512x512",
+      size: "1024x1024",
     });
 
     res.status(200).json({
