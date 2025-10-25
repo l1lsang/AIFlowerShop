@@ -20,8 +20,8 @@ export default async function handler(req, res) {
     - 색감: ${userData.color}
     - 상황: ${userData.occasion}
 
-    위 정보를 바탕으로 계절에 어울리는 꽃 조합을 추천하고,
-    꽃말 의미와 감성 설명을 짧게 작성해주세요.
+    위 정보를 바탕으로 현재 계절에 어울리는 꽃 조합을 추천하고,
+    꽃들의 꽃말 의미와 감성 설명을 짧게 작성해주세요.
     `;
 
     const completion = await client.chat.completions.create({
