@@ -1,15 +1,29 @@
 .chat-container {
-  width: 400px;
-  margin: 50px auto;
-  font-family: 'Arial', sans-serif;
+  width: 90%;
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 15px;
+  font-family: 'Pretendard', 'Arial', sans-serif;
   text-align: center;
+  background-color: #fff8f8;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+  transition: all 0.3s ease;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #ff6b9f;
 }
 
 .ai-bubble {
-  background-color: #ffe4e1;
+  background-color: #ffe4e9;
   padding: 15px;
   border-radius: 20px;
-  margin: 10px 0;
+  margin: 15px 0;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .options {
@@ -27,35 +41,85 @@
   background-color: #ffb6c1;
   cursor: pointer;
   transition: 0.2s;
+  font-size: 0.95rem;
+  flex: 1 1 45%;
+  max-width: 180px;
 }
 
 .options button:hover {
-  background-color: #ff69b4;
+  background-color: #ff8fab;
+  transform: translateY(-2px);
 }
 
-.step-indicator {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #888;
-}
 .input-box {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .input-box input {
-  padding: 8px;
+  padding: 10px;
   border-radius: 10px;
   border: 1px solid #ddd;
   width: 60%;
+  font-size: 0.95rem;
 }
 
 .input-box button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border-radius: 10px;
   border: none;
   background-color: #ffb6c1;
   cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.input-box button:hover {
+  background-color: #ff8fab;
+}
+
+.step-indicator {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* 🌸 모바일 대응 */
+@media (max-width: 480px) {
+  .chat-container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .ai-bubble {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .options button {
+    flex: 1 1 100%;
+    max-width: none;
+    font-size: 0.9rem;
+  }
+
+  .input-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-box input {
+    width: 90%;
+  }
+
+  .input-box button {
+    width: 60%;
+    margin-top: 8px;
+  }
 }
