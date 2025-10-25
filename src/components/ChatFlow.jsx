@@ -10,7 +10,7 @@ const steps = [
   {
     id: 2,
     question: "어떤 종류의 꽃을 원하시나요?",
-    options: ["생화 꽃다발","생화 화분", "조화", "말린꽃"],
+    options: ["생화", "조화", "말린꽃"],
     key: "type",
   },
   {
