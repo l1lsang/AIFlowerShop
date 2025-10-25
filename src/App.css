@@ -38,3 +38,24 @@
   font-size: 14px;
   color: #888;
 }
+.input-box {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.input-box input {
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  width: 60%;
+}
+
+.input-box button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: #ffb6c1;
+  cursor: pointer;
+}

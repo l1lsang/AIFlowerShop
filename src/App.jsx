@@ -26,14 +26,29 @@ const steps = [
     options: ["레드/핑크", "그린", "보라/블루", "랜덤 / 믹스"],
     key: "color",
   },
+  {
+    id: 5,
+    question: "특별히 선호하는 꽃이 있으신가요?",
+    options: ["장미", "튤립", "해바라기", "프리지아", "직접 입력"],
+    key: "flowerPreference",
+  },
 ];
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(0);
   const [userChoices, setUserChoices] = useState({});
   const [finished, setFinished] = useState(false);
+  const [customInput, setCustomInput] = useState("");
 
   const handleOptionClick = (key, value) => {
+    if (value === "직접 입력") {
+      setCustomInput(""); // 입력창 활성화
+    } else {
+      nextStep(key, value);
+    }
+  };
+
+  const nextStep = (key, value) => {
     setUserChoices({ ...userChoices, [key]: value });
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -45,6 +60,7 @@ export default function App() {
   return (
     <div className="chat-container">
       <h1>🌸 AI Flower Shop</h1>
+
       {!finished ? (
         <div className="chat-step">
           <div className="ai-bubble">{steps[currentStep].question}</div>
@@ -60,6 +76,28 @@ export default function App() {
               </button>
             ))}
           </div>
+
+          {customInput !== undefined &&
+            steps[currentStep].options.includes("직접 입력") &&
+            !finished &&
+            currentStep === 4 && ( // id: 5이므로 index는 4
+              <div className="input-box">
+                <input
+                  type="text"
+                  placeholder="좋아하는 꽃을 입력해주세요 🌷"
+                  value={customInput}
+                  onChange={(e) => setCustomInput(e.target.value)}
+                />
+                <button
+                  onClick={() =>
+                    nextStep(steps[currentStep].key, customInput || "없음")
+                  }
+                >
+                  확인
+                </button>
+              </div>
+            )}
+
           <div className="step-indicator">
             Step {currentStep + 1}/{steps.length}
           </div>
@@ -73,4 +111,3 @@ export default function App() {
     </div>
   );
 }
-
