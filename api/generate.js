@@ -49,10 +49,9 @@ export default async function handler(req, res) {
     `;
 
     const image = await client.images.generate({
-      model: "gpt-image-1",
+      model: "gpt-image-1-mini",
       prompt: imagePrompt,
       size: "1024x1024",
-      quality: "high",
     });
 
     const imageUrl = image.data?.[0]?.url;
