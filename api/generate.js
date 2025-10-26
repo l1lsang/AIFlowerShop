@@ -12,6 +12,7 @@ export default async function handler(req, res) {
   });
 
   try {
+    // 🌷 1️⃣ 텍스트 설명 생성
     const prompt = `
     사용자가 입력한 정보:
     - 제품: ${userData.product}
@@ -21,46 +22,46 @@ export default async function handler(req, res) {
     - 상황: ${userData.occasion}
 
     위 정보를 바탕으로 현재 계절에 어울리는 꽃 조합을 추천하고,
-    꽃말 의미와 감성 설명을 짧게 작성해주세요.
+    꽃들의 꽃말 의미와 감성 설명을 짧게 작성해주세요.
     `;
 
-    // 🌷 텍스트 생성
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
     });
 
-    const flowerDescription = completion.choices[0].message.content;
+    const flowerDescription = completion.choices[0].message.content.trim();
 
-    // 🌸 이미지 생성 (mini 버전)
+    // 🌸 2️⃣ 이미지 프롬프트 생성
     const imagePrompt = `
-      A realistic photo of ${userData.color} tone bouquet for ${userData.occasion}.
-      Include flowers suitable for ${userData.type}.
+    A realistic, detailed, soft lighting photo of a ${userData.color} tone bouquet 
+    for ${userData.occasion}, including flowers suitable for ${userData.type}. 
+    Beautiful composition, gentle bokeh background.
     `;
 
+    // 🌼 3️⃣ 이미지 생성 (mini 버전)
     const image = await client.images.generate({
       model: "gpt-image-1-mini",
       prompt: imagePrompt,
       size: "1024x1024",
-      response_format: "b64_json", // ✅ base64로 받아오기
     });
 
-    // ✅ Base64 → 이미지 URL 변환
-    const imageBase64 = image.data[0]?.b64_json;
-    const imageUrl = imageBase64
-      ? `data:image/png;base64,${imageBase64}`
-      : null;
+    // 🌺 4️⃣ 이미지 URL 추출
+    const imageUrl = image.data[0]?.url;
 
     if (!imageUrl) {
-      throw new Error("⚠️ 이미지 URL이 비어 있습니다.");
+      console.error("⚠️ 이미지 URL이 비어 있습니다:", image);
+      return res.status(500).json({ error: "Image generation failed (no URL)." });
     }
 
+    // 🌻 5️⃣ 결과 반환
     res.status(200).json({
       description: flowerDescription,
       imageUrl,
     });
+
   } catch (error) {
-    console.error("❌ Error generating image:", error);
-    res.status(500).json({ error: error.message || "AI request failed." });
+    console.error("❌ Error generating flower or image:", error);
+    res.status(500).json({ error: "AI request failed." });
   }
 }
