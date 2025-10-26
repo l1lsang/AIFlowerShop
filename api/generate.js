@@ -39,22 +39,25 @@ export default async function handler(req, res) {
     Beautiful composition, gentle bokeh background.
     `;
 
-    // 🌼 3️⃣ 이미지 생성 (mini 버전)
+    // 🌼 3️⃣ 이미지 생성 (b64_json으로 반환됨)
     const image = await client.images.generate({
       model: "gpt-image-1-mini",
       prompt: imagePrompt,
       size: "1024x1024",
     });
 
-    // 🌺 4️⃣ 이미지 URL 추출
-    const imageUrl = image.data[0]?.url;
+    // base64 데이터 추출
+    const imageBase64 = image.data[0]?.b64_json;
 
-    if (!imageUrl) {
-      console.error("⚠️ 이미지 URL이 비어 있습니다:", image);
-      return res.status(500).json({ error: "Image generation failed (no URL)." });
+    if (!imageBase64) {
+      console.error("⚠️ 이미지 데이터가 비어 있습니다:", image);
+      return res.status(500).json({ error: "Image generation failed (no data)." });
     }
 
-    // 🌻 5️⃣ 결과 반환
+    // 브라우저에서 표시 가능한 data URL로 변환
+    const imageUrl = `data:image/png;base64,${imageBase64}`;
+
+    // 🌻 4️⃣ 결과 반환
     res.status(200).json({
       description: flowerDescription,
       imageUrl,
