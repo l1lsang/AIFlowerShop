@@ -1,62 +1,64 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
-import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 
-export default function Login({ onLogin, onSignup }) {
+export default function Login({ onSignup, onLogin }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+  const [error, setError] = useState("");
 
-  const loginGoogle = async () => {
-    try {
-      const res = await signInWithPopup(auth, provider);
-      onLogin(res.user);
-    } catch (e) {
-      console.error(e);
-      alert("로그인 실패 😥");
-    }
-  };
-
-  const loginEmail = async () => {
+  // ⭐ 이메일 로그인
+  const handleLogin = async () => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, pw);
       onLogin(res.user);
-    } catch (e) {
-      console.error(e);
-      alert("계정 정보가 올바르지 않습니다.");
+    } catch (err) {
+      setError("로그인 실패! 이메일 또는 비밀번호를 확인하세요.");
+    }
+  };
+
+  // ⭐ 구글 로그인
+  const handleGoogle = async () => {
+    try {
+      const res = await signInWithPopup(auth, provider);
+      onLogin(res.user);
+    } catch (err) {
+      setError("Google 로그인 실패!");
     }
   };
 
   return (
-    <div className="auth-wrap fade-in">
-      <h1 className="flow-logo">Flow</h1>
+    <div className="login-wrap">
+      <h2 className="flow-logo">Flow</h2>
       <p className="flow-sub">마음은 흐르고, 꽃은 피어납니다.</p>
 
-      <div className="auth-box">
-        <input
-          placeholder="이메일"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          placeholder="비밀번호"
-          type="password"
-          value={pw}
-          onChange={e => setPw(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="이메일"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <button className="btn-primary" onClick={loginEmail}>
-          🌿 로그인
-        </button>
-        <button className="btn-google" onClick={loginGoogle}>
-          🌼 Google 로그인
-        </button>
+      <input
+        type="password"
+        placeholder="비밀번호"
+        value={pw}
+        onChange={(e) => setPw(e.target.value)}
+      />
 
-        <p className="auth-link">
-          아직 계정이 없다면{" "}
-          <span onClick={onSignup}>회원가입</span>
-        </p>
-      </div>
+      <button className="login-btn" onClick={handleLogin}>
+        정원 입장하기
+      </button>
+
+      <button className="google-btn" onClick={handleGoogle}>
+        🌼 Google 계정으로 시작
+      </button>
+
+      {error && <p className="error-msg">{error}</p>}
+
+      <p className="change" onClick={onSignup}>
+        아직 정원이 없나요? 🌱 회원가입
+      </p>
     </div>
   );
 }

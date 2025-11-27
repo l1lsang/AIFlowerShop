@@ -338,3 +338,96 @@ body {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.login-wrap {
+  max-width: 380px;
+  margin: 80px auto;
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.flow-logo {
+  font-size: 42px;
+  margin: 12px 0;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 2px;
+}
+
+.flow-sub {
+  font-size: 14px;
+  color: #6b6b6b;
+  margin-bottom: 24px;
+}
+
+.login-wrap input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border: 1.8px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.login-wrap input:focus {
+  border-color: #9c7af5;
+  box-shadow: 0 0 8px rgba(150,100,255,0.3);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #9c7af5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.login-btn:hover {
+  background: #8261ff;
+}
+
+.google-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #fff;
+  border: 1.6px solid #d9d9d9;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.google-btn:hover {
+  background: #f5f5f5;
+}
+
+.error-msg {
+  margin-top: 8px;
+  color: #ff5670;
+  font-size: 14px;
+}
+
+.change {
+  margin-top: 18px;
+  color: #555;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

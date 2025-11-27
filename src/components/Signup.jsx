@@ -1,61 +1,62 @@
-// src/components/Signup.jsx
 import React, { useState } from "react";
-import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Signup({ onBack, onLogin }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
+  const [error, setError] = useState("");
 
-  const signupEmail = async () => {
+  const handleSignup = async () => {
     if (pw !== pw2) {
-      alert("비밀번호가 일치하지 않습니다.");
+      setError("비밀번호가 일치하지 않습니다.");
       return;
     }
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, pw);
       onLogin(res.user);
-    } catch (e) {
-      console.error(e);
-      alert("회원가입 중 문제가 발생했습니다.");
+    } catch (err) {
+      setError("회원가입 실패. 이메일을 확인하세요.");
     }
   };
 
   return (
-    <div className="auth-wrap fade-in">
-      <h1 className="flow-logo">Flow</h1>
-      <p className="flow-sub">당신의 마음을 위한 정원을 만들어드릴게요.</p>
+    <div className="login-wrap">
+      <h2 className="flow-logo">Flow</h2>
+      <p className="flow-sub">나만의 정원을 만들어보세요 🌷</p>
 
-      <div className="auth-box">
-        <input
-          placeholder="이메일"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          placeholder="비밀번호"
-          type="password"
-          value={pw}
-          onChange={e => setPw(e.target.value)}
-        />
-        <input
-          placeholder="비밀번호 확인"
-          type="password"
-          value={pw2}
-          onChange={e => setPw2(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="이메일"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <button className="btn-primary" onClick={signupEmail}>
-          🌸 Flow Garden 만들기
-        </button>
+      <input
+        type="password"
+        placeholder="비밀번호"
+        value={pw}
+        onChange={(e) => setPw(e.target.value)}
+      />
 
-        <p className="auth-link">
-          이미 계정이 있다면{" "}
-          <span onClick={onBack}>로그인</span>
-        </p>
-      </div>
+      <input
+        type="password"
+        placeholder="비밀번호 확인"
+        value={pw2}
+        onChange={(e) => setPw2(e.target.value)}
+      />
+
+      <button className="login-btn" onClick={handleSignup}>
+        정원 만들기
+      </button>
+
+      {error && <p className="error-msg">{error}</p>}
+
+      <p className="change" onClick={onBack}>
+        이미 정원이 있나요? 🌺 돌아가기
+      </p>
     </div>
   );
 }
