@@ -1,16 +1,18 @@
 // src/components/FlowerResult.jsx
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import html2canvas from "html2canvas";
-import { auth, db } from "../firebase";
+import { auth, db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 export default function FlowerResult({ result, onReset }) {
   const cardRef = useRef();
+  const [saving, setSaving] = useState(false);
 
-  // ===========================
-  // ⭐ 1. PNG 다운로드
-  // ===========================
+  // ===============================
+  // 📥 카드 PNG 다운로드
+  // ===============================
   const handleDownload = async () => {
     const canvas = await html2canvas(cardRef.current, {
       useCORS: true,
@@ -26,55 +28,82 @@ export default function FlowerResult({ result, onReset }) {
     link.click();
   };
 
-  // ===========================
-  // ⭐ 2. Firestore 저장
-  // ===========================
+  // ===============================
+  // 🌿 Firestore 저장
+  // ===============================
   const handleSaveToDB = async () => {
     const user = auth.currentUser;
-
     if (!user) {
-      alert("로그인 후 저장할 수 있어요 🌱");
+      alert("로그인이 필요합니다 🌱");
       return;
     }
 
+    setSaving(true);
+
     try {
+      // 1) Firebase Storage 업로드
+      const storageRef = ref(
+        storage,
+        `users/${user.uid}/cards/${Date.now()}.png`
+      );
+
+      // base64 이미지 업로드
+      await uploadString(storageRef, result.imageUrl, "data_url");
+
+      // 2) Storage URL 가져오기
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // 3) Firestore 저장
       await addDoc(
         collection(db, "users", user.uid, "cards"),
         {
           description: result.description,
-          imageUrl: result.imageUrl,
+          imageUrl: downloadURL,
           createdAt: serverTimestamp(),
         }
       );
 
       alert("🌸 정원에 카드가 심어졌어요!");
     } catch (err) {
-      console.error("🔥 Firestore 저장 오류:", err);
-      alert("저장에 실패했습니다 😢");
+      console.error("🔥 카드 저장 실패:", err);
+      alert("저장 실패 😢 다시 시도해주세요");
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
     <div className="result-container">
 
-      {/* 🌸 저장 가능한 카드 전체 캡쳐 대상 */}
+      {/* ===============================
+           🌸 카드 영역 (캡쳐 대상)
+      =============================== */}
       <div className="flow-card" ref={cardRef}>
         <img className="card-img" src={result.imageUrl} alt="flower" />
 
         <div className="card-body">
           <h2 className="card-title">🌸 Today's Flow</h2>
-          <div className="card-description">{result.description}</div>
+
+          <div className="card-description">
+            {result.description}
+          </div>
         </div>
       </div>
 
-      {/* 🌼 버튼 영역 */}
+      {/* ===============================
+          버튼 UI
+      =============================== */}
       <div className="result-actions">
         <button className="save-btn" onClick={handleDownload}>
-          📥 내 갤러리에 저장
+          📥 카드 다운로드
         </button>
 
-        <button className="garden-btn" onClick={handleSaveToDB}>
-          🌱 정원에 심기
+        <button
+          className="garden-btn"
+          onClick={handleSaveToDB}
+          disabled={saving}
+        >
+          {saving ? "🌱 저장 중..." : "🌷 정원에 심기"}
         </button>
 
         <button className="again-btn" onClick={onReset}>

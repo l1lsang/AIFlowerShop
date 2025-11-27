@@ -3,8 +3,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// ⚠ CRA에서는 import.meta.env가 아니라 process.env.REACT_APP_... 써야 해!
+// ⚠ CRA에서는 import.meta.env ❌
+// 반드시 process.env.REACT_APP_ 로 시작해야 함
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -17,7 +19,8 @@ const firebaseConfig = {
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
 
-// Auth & Provider & Firestore
+// 기능 export
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
+export const storage = getStorage(app);

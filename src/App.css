@@ -727,3 +727,129 @@ body {
   color: #ff6b6b;
   cursor: pointer;
 }
+.card-page {
+  width: 90%;
+  max-width: 800px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.card-sub {
+  color: #666;
+  margin-bottom: 18px;
+}
+
+/* 👍 그리드 구조 */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 18px;
+}
+
+/* 카드 박스 */
+.card-item {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  padding: 14px;
+  cursor: pointer;
+  transition: .25s ease;
+}
+.card-item:hover {
+  transform: translateY(-4px);
+}
+
+.card-image {
+  width: 100%;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.card-md {
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  color: #333;
+}
+
+/* 날짜 + 삭제 */
+.card-meta {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #777;
+}
+
+.del-btn {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+/* ===============================
+   Modal — Flow 경험의 핵심
+================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.modal-card {
+  background: #fff;
+  width: 92%;
+  max-width: 520px;
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  animation: fadeIn .25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-img {
+  width: 100%;
+  border-radius: 16px;
+}
+
+.modal-text {
+  font-size: 15px;
+  color: #444;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.modal-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.close-btn {
+  background: #f3f3f3;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(.95);}
+  to {opacity: 1; transform: scale(1);}
+}
