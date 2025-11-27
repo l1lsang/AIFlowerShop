@@ -1054,3 +1054,593 @@ body {
   color: #fff;
   cursor: pointer;
 }
+/* =========================
+   Global
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, "Pretendard",
+    "Noto Sans KR", sans-serif;
+  background: radial-gradient(circle at top, #ffe8f5 0, #f5f7ff 40%, #f2f2f2 100%);
+  color: #111827;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* App root */
+.App {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* 공통 로고 / 서브텍스트 */
+.flow-logo {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.flow-sub {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Splash / Auth 로딩 */
+.splash-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* =========================
+   Auth (Login / Signup)
+========================= */
+
+.login-wrap,
+.signup-wrap {
+  max-width: 380px;
+  margin: 60px auto;
+  padding: 28px 24px 32px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.login-wrap input,
+.signup-wrap input {
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.login-wrap input:focus,
+.signup-wrap input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.18);
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 11px 0;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(79, 70, 229, 0.25);
+}
+
+.google-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.google-btn:hover {
+  background: #f9fafb;
+}
+
+.change {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.change:hover {
+  text-decoration: underline;
+}
+
+.error-msg {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #ef4444;
+}
+
+
+/* =========================
+   Top actions (로그아웃 / My Garden 버튼)
+========================= */
+
+.logout-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  background: rgba(15, 23, 42, 0.92);
+  color: #fff;
+  border-radius: 999px;
+  border: none;
+  padding: 9px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.logout-btn:hover {
+  background: #020617;
+}
+
+.view-cards-btn {
+  margin-top: 4px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  border: none;
+  padding: 8px 14px;
+  background: rgba(236, 72, 153, 0.12);
+  color: #be185d;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.view-cards-btn:hover {
+  background: rgba(236, 72, 153, 0.18);
+}
+
+
+/* =========================
+   ChatFlow
+========================= */
+
+.chat-wrapper {
+  max-width: 520px;
+  margin: 40px auto 0;
+  padding: 24px 22px 26px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+}
+
+.chat-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.chat-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chat-option {
+  border-radius: 999px;
+  border: none;
+  padding: 9px 14px;
+  font-size: 14px;
+  background: #f3f4ff;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.chat-option:hover {
+  background: #e0e7ff;
+}
+
+
+/* =========================
+   로딩 애니메이션 (물결)
+========================= */
+
+.loading-wrap {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.flow-wave {
+  width: 120px;
+  height: 12px;
+  margin: 0 auto 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(96, 165, 250, 0),
+    rgba(96, 165, 250, 0.9),
+    rgba(236, 72, 153, 0)
+  );
+  background-size: 200% 100%;
+  animation: waveMove 1.4s infinite ease-in-out;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+@keyframes waveMove {
+  0% {
+    background-position-x: 0%;
+  }
+  50% {
+    background-position-x: 100%;
+  }
+  100% {
+    background-position-x: 0%;
+  }
+}
+
+
+/* =========================
+   FlowerResult (결과 카드)
+========================= */
+
+.result-container {
+  max-width: 420px;
+  margin: 32px auto 0;
+  text-align: center;
+}
+
+.flow-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  margin-bottom: 18px;
+}
+
+.card-img {
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  text-align: left;
+}
+
+.card-title {
+  font-size: 18px;
+  margin: 4px 0 8px;
+}
+
+.card-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.result-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.save-btn,
+.garden-btn,
+.again-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 9px 15px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #6fa1ff, #8ec9ff);
+  color: #fff;
+}
+
+.garden-btn {
+  background: linear-gradient(135deg, #b186ff, #ff95c6);
+  color: #fff;
+}
+
+.again-btn {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.save-btn:hover,
+.garden-btn:hover,
+.again-btn:hover {
+  transform: translateY(-1px);
+}
+
+.garden-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   SavedCards (정원 목록)
+========================= */
+
+.card-page {
+  padding: 26px 18px 40px;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #374151;
+}
+
+.card-sub {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.empty-text {
+  margin-top: 26px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.card-list {
+  margin-top: 24px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.card-item {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: left;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+}
+
+.card-image {
+  width: 100%;
+  height: 170px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.image-placeholder {
+  height: 170px;
+  border-radius: 12px;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.card-preview {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 6px;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.del-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+/* =========================
+   Modal (카드 상세 보기)
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.modal-card {
+  width: 90%;
+  max-width: 420px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.modal-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.modal-text {
+  font-size: 14px;
+  text-align: left;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.modal-date {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.close-btn {
+  margin-top: 10px;
+  border-radius: 999px;
+  border: none;
+  padding: 8px 16px;
+  background: #111827;
+  color: #fff;
+  cursor: pointer;
+}
+
+
+/* =========================
+   CardDetail (상세 페이지)
+========================= */
+
+.detail-page {
+  padding: 40px 18px 50px;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.detail-title {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.detail-img {
+  width: 100%;
+  border-radius: 18px;
+  margin-top: 18px;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.18);
+}
+
+.detail-text {
+  margin: 18px 0 10px;
+  font-size: 15px;
+  text-align: left;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: #111827;
+}
+
+.detail-date {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 16px;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.detail-actions .del-btn {
+  background: #ef4444;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: none;
+}
+
+.detail-actions .garden-btn {
+  background: #111827;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: none;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 640px) {
+  .App {
+    padding: 18px 14px 30px;
+  }
+
+  .login-wrap,
+  .signup-wrap {
+    margin-top: 40px;
+  }
+
+  .detail-page {
+    padding-top: 56px;
+  }
+
+  .back-btn {
+    top: 12px;
+    left: 12px;
+  }
+}
