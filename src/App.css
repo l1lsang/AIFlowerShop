@@ -532,3 +532,83 @@ body {
 .result-buttons button:last-child {
   background: #f0f0f0;
 }
+.result-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* 🪷 Flow 카드 */
+.flow-card {
+  width: 380px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  overflow: visible;
+}
+
+/* 이미지 */
+.card-img {
+  width: 100%;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+/* 텍스트 영역 */
+.card-body {
+  text-align: left;
+}
+
+.card-title {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.card-description {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;   /* ⭐ 핵심 */
+  color: #333;
+}
+
+/* 버튼 영역 */
+.result-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 저장 버튼 */
+.save-btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #b389ff, #ff99c8);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(180,100,255,0.28);
+}
+
+/* 다시 만들기 */
+.again-btn {
+  padding: 12px 18px;
+  background: #f4f4f4;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.again-btn:hover {
+  background: #e7e7e7;
+}
