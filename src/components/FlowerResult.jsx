@@ -1,32 +1,38 @@
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
 
 export default function FlowerResult({ result, onReset }) {
-  const saveCard = () => {
-    const cards = JSON.parse(localStorage.getItem("flowCards") || "[]");
+  const cardRef = useRef();
 
-    const newCard = {
-      ...result,
-      id: Date.now(),
-      createdAt: new Date().toISOString(),
-    };
+  const handleDownload = async () => {
+    const canvas = await html2canvas(cardRef.current, {
+      useCORS: true,
+      scale: 2, // 고해상도
+    });
 
-    cards.push(newCard);
-    localStorage.setItem("flowCards", JSON.stringify(cards));
-    alert("🌸 카드가 저장되었습니다.");
+    const imgData = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = `flow_card_${Date.now()}.png`;
+    link.click();
   };
 
   return (
-    <div className="result fade-in">
-      <img src={result.imageUrl} alt="flower" className="flower-img" />
+    <div className="result-container">
 
-      <div className="result-text">
-        <ReactMarkdown>{result.text}</ReactMarkdown>
+      {/* 🌼 다운로드 가능한 카드 */}
+      <div className="flow-card" ref={cardRef}>
+        <img className="card-img" src={result.imageUrl} alt="flower" />
+        <div className="card-text">
+          <h2>🌸 Today’s Flow</h2>
+          <pre>{result.description}</pre>
+        </div>
       </div>
 
-      <div className="result-actions">
-        <button className="reset-btn" onClick={onReset}>🌿 다른 마음 떠올리기</button>
-        <button className="save-btn" onClick={saveCard}>💌 카드 저장하기</button>
+      <div className="result-buttons">
+        <button onClick={handleDownload}>📥 카드 저장하기</button>
+        <button onClick={onReset}>🔄 다시 만들기</button>
       </div>
     </div>
   );
