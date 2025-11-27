@@ -1,126 +1,79 @@
-import React, { useState } from "react";
+// src/App.jsx
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+
+// 🔥 Pages
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 import ChatFlow from "./components/ChatFlow";
 import FlowerResult from "./components/FlowerResult";
 import SavedCards from "./components/SavedCards";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import { auth } from "./firebase";
-import "./App.css";
+import CardDetail from "./components/CardDetail";
 
 export default function App() {
-  // 🔥 1) 훅은 항상 최상단
-  const [user, setUser] = useState(auth.currentUser);
-  const [mode, setMode] = useState("login");
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  // 🔥 2) Flow 관련 상태 — 조건과 관계없이 항상 선언
-  const [step, setStep] = useState(1);
-  const [userData, setUserData] = useState({});
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // --------------------------------------
+  // 🟢 Firebase 로그인 상태 유지
+  // --------------------------------------
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      setAuthLoading(false);
+    });
+    return () => unsub();
+  }, []);
 
-  // -----------------------------
-  // 함수들 (훅과 같은 레벨, 조건 X)
-  // -----------------------------
-  const handleNext = (key, value) => {
-    setUserData((prev) => ({ ...prev, [key]: value }));
-    setStep((prev) => prev + 1);
-  };
-
-  const handleGenerate = async () => {
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await res.json();
-      setResult(data);
-      setStep(99);
-    } catch (e) {
-      console.error(e);
-      alert("AI 처리 중 문제가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const reset = () => {
-    setStep(1);
-    setUserData({});
-    setResult(null);
-    setLoading(false);
-  };
-
-  // ============================================================
-  // 🔥 3) 여기서부터는 "오직 JSX 분기만" — Hook 호출 X
-  // ============================================================
-
-  // 🧡 로그인 안 된 상태
-  if (!user) {
-    return mode === "login" ? (
-      <Login
-        onLogin={(u) => setUser(u)}
-        onSignup={() => setMode("signup")}
-      />
-    ) : (
-      <Signup
-        onLogin={(u) => setUser(u)}
-        onBack={() => setMode("login")}
-      />
+  // 🕊 로그인 상태 파악 중
+  if (authLoading) {
+    return (
+      <div style={{ padding: 40, textAlign: "center" }}>
+        <h3>정원을 불러오는 중 🌿...</h3>
+      </div>
     );
   }
 
-  // 🌱 로그인 O → Flow 메인 UI
   return (
-    <div className="App">
-      <h1 className="flow-logo">Flow</h1>
-      <p className="flow-sub">마음은 흐르고, 꽃은 피어납니다.</p>
+    <Router>
+      <Routes>
 
-      {/* 로그아웃 */}
-      <button
-        className="logout-btn"
-        onClick={() => {
-          auth.signOut();
-          setUser(null);
-        }}
-      >
-        로그아웃
-      </button>
+        {/* ===========================================
+            🟡 로그인 안된 상태
+        =========================================== */}
+        {!user && (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-      {/* My Garden 버튼 */}
-      {!loading && step !== 99 && step !== 100 && (
-        <button className="view-cards-btn" onClick={() => setStep(100)}>
-          🌸 My Flow Garden 보기
-        </button>
-      )}
+            {/* 그 외 URL 접근 시 로그인으로 */}
+            <Route path="*" element={<Navigate to="/login" />} />
+          </>
+        )}
 
-      {/* 질문 */}
-      {step <= 6 && !loading && (
-        <ChatFlow step={step} onNext={handleNext} onGenerate={handleGenerate} />
-      )}
+        {/* ===========================================
+            💚 로그인 된 상태
+        =========================================== */}
+        {user && (
+          <>
+            <Route path="/" element={<ChatFlow />} />
+            <Route path="/result" element={<FlowerResult />} />
+            <Route path="/garden" element={<SavedCards />} />
+            <Route path="/card/:id" element={<CardDetail />} />
 
-      {/* 로딩 */}
-      {loading && (
-        <div className="loading-wrap">
-          <div className="flow-wave"></div>
-          <p className="loading-text">
-            🌿 감정을 꽃의 언어로 번역 중입니다...
-          </p>
-        </div>
-      )}
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        )}
 
-      {/* 결과 */}
-      {step === 99 && result && !loading && (
-        <FlowerResult result={result} onReset={reset} />
-      )}
-
-      {/* 저장된 카드 목록 */}
-      {step === 100 && !loading && (
-        <SavedCards onBack={() => setStep(1)} />
-      )}
-    </div>
+      </Routes>
+    </Router>
   );
 }

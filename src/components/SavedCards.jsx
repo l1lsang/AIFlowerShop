@@ -23,7 +23,6 @@ export default function SavedCards({ onBack }) {
       orderBy("createdAt", "desc")
     );
 
-    // Firestore 실시간 동기
     const unsub = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map((d) => ({
         id: d.id,
@@ -35,7 +34,6 @@ export default function SavedCards({ onBack }) {
     return () => unsub();
   }, []);
 
-  // 🔥 카드 삭제
   const deleteCard = async (id) => {
     const user = auth.currentUser;
     if (!user) return;
@@ -43,15 +41,29 @@ export default function SavedCards({ onBack }) {
     await deleteDoc(doc(db, "users", user.uid, "cards", id));
   };
 
+  const formatDate = (ts) => {
+    try {
+      return ts?.toDate()?.toLocaleDateString();
+    } catch {
+      return "";
+    }
+  };
+
   return (
     <div className="card-page">
-
-      <button className="back-btn" onClick={onBack}>
-        ⬅️ 돌아가기
-      </button>
+      {/* 뒤로가기 */}
+      <button className="back-btn" onClick={onBack}>⬅️ 돌아가기</button>
 
       <h2>🌷 My Flow Garden</h2>
       <p className="card-sub">당신의 마음이 피어났던 순간들</p>
+
+      {/* 빈 상태 */}
+      {cards.length === 0 && (
+        <p className="empty-text">
+          아직 정원에 꽃이 없어요 🌱  
+          Flow를 통해 마음을 심어보세요 🌸
+        </p>
+      )}
 
       {/* 카드 그리드 */}
       <div className="card-list">
@@ -61,13 +73,20 @@ export default function SavedCards({ onBack }) {
             key={card.id}
             onClick={() => setSelectedCard(card)}
           >
-            <img className="card-image" src={card.imageUrl} alt="flower" />
-            <ReactMarkdown className="card-md">
-              {card.description}
-            </ReactMarkdown>
+            {card.imageUrl ? (
+              <img className="card-image" src={card.imageUrl} alt="flower" />
+            ) : (
+              <div className="image-placeholder">🌸</div>
+            )}
+
+            {/* 🔥 프리뷰 Only (첫 78자) */}
+            <div className="card-preview">
+              {card.description.slice(0, 78)}...
+            </div>
 
             <div className="card-meta">
-              <p>{card.createdAt?.toDate?.().toLocaleDateString()}</p>
+              <p>{formatDate(card.createdAt)}</p>
+
               <button
                 className="del-btn"
                 onClick={(e) => {
@@ -75,20 +94,30 @@ export default function SavedCards({ onBack }) {
                   deleteCard(card.id);
                 }}
               >
-                🗑 삭제
+                🗑
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* ===========================
-         🌸 상세보기 Modal
-      ============================*/}
+      {/* =========================
+          🌸 상세보기 Modal
+      ========================= */}
       {selectedCard && (
-        <div className="modal-overlay" onClick={() => setSelectedCard(null)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <img src={selectedCard.imageUrl} className="modal-img" alt="flower" />
+        <div
+          className="modal-overlay"
+          onClick={() => setSelectedCard(null)}
+        >
+          <div
+            className="modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedCard.imageUrl}
+              className="modal-img"
+              alt="flower"
+            />
 
             <h3>🌸 My Flow</h3>
 
@@ -100,7 +129,10 @@ export default function SavedCards({ onBack }) {
               {selectedCard.createdAt?.toDate?.().toLocaleString()}
             </p>
 
-            <button className="close-btn" onClick={() => setSelectedCard(null)}>
+            <button
+              className="close-btn"
+              onClick={() => setSelectedCard(null)}
+            >
               닫기
             </button>
           </div>

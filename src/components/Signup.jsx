@@ -1,62 +1,36 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
 
-export default function Signup({ onBack, onLogin }) {
-  const [email, setEmail] = useState("");
-  const [pw, setPw] = useState("");
-  const [pw2, setPw2] = useState("");
-  const [error, setError] = useState("");
+export default function Signup() {
+  const [email,setEmail]=useState("");
+  const [pw,setPw]=useState("");
+  const [err,setErr]=useState("");
 
-  const handleSignup = async () => {
-    if (pw !== pw2) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
+  const signup = async () => {
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, pw);
-      onLogin(res.user);
-    } catch (err) {
-      setError("회원가입 실패. 이메일을 확인하세요.");
+      const res = await createUserWithEmailAndPassword(auth,email,pw);
+      const user = res.user;
+
+      await setDoc(doc(db,"users",user.uid),{
+        email:user.email,
+        createdAt:new Date()
+      });
+    } catch {
+      setErr("회원가입 실패");
     }
   };
 
   return (
-    <div className="login-wrap">
-      <h2 className="flow-logo">Flow</h2>
-      <p className="flow-sub">나만의 정원을 만들어보세요 🌷</p>
+    <div className="signup-wrap">
+      <h2>회원가입</h2>
 
-      <input
-        type="email"
-        placeholder="이메일"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={pw}
-        onChange={(e) => setPw(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="비밀번호 확인"
-        value={pw2}
-        onChange={(e) => setPw2(e.target.value)}
-      />
-
-      <button className="login-btn" onClick={handleSignup}>
-        정원 만들기
-      </button>
-
-      {error && <p className="error-msg">{error}</p>}
-
-      <p className="change" onClick={onBack}>
-        이미 정원이 있나요? 🌺 돌아가기
-      </p>
+      <input placeholder="이메일" onChange={(e)=>setEmail(e.target.value)}/>
+      <input type="password" placeholder="비밀번호" onChange={(e)=>setPw(e.target.value)}/>
+      <button onClick={signup}>🌱 나만의 정원 만들기</button>
+      {err&&<p>{err}</p>}
+      <a href="/login">로그인</a>
     </div>
   );
 }
