@@ -47,12 +47,29 @@ const steps = [
 
 export default function ChatFlow({ step, onNext, onGenerate }) {
   const [input, setInput] = useState("");
+
   const current = steps.find((s) => s.id === step);
 
+  // 1️⃣ step 범위 초과 방어
+  if (!current) return null;
+
   const handleNext = () => {
+    if (!input) return;
+
     onNext(current.key, input);
-    if (step === steps.length) onGenerate();
+
+    if (step === steps.length) {
+      onGenerate();
+    }
+
     setInput("");
+  };
+
+  const handleOptionClick = (option) => {
+    setInput(option);
+    // 선택 즉시 넘어감 (UX↑)
+    onNext(current.key, option);
+    if (step === steps.length) onGenerate();
   };
 
   return (
@@ -73,7 +90,7 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
           {current.options.map((option) => (
             <button
               key={option}
-              onClick={() => setInput(option)}
+              onClick={() => handleOptionClick(option)}
               className={`flow-option ${input === option ? "active" : ""}`}
             >
               {option}
@@ -82,9 +99,11 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </div>
       )}
 
-      <button className="flow-next" disabled={!input} onClick={handleNext}>
-        다음 →
-      </button>
+      {current.type === "text" && (
+        <button className="flow-next" disabled={!input} onClick={handleNext}>
+          다음 →
+        </button>
+      )}
     </div>
   );
 }
