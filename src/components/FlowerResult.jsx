@@ -1,19 +1,33 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
-export default function FlowerResult({ result }) {
-    if (!result || !result.imageUrl) {
-    return <p>이미지를 불러오는 중이에요... 🌼</p>;
-  }
+export default function FlowerResult({ result, onReset }) {
+  const saveCard = () => {
+    const cards = JSON.parse(localStorage.getItem("flowCards") || "[]");
+
+    const newCard = {
+      ...result,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+
+    cards.push(newCard);
+    localStorage.setItem("flowCards", JSON.stringify(cards));
+    alert("🌸 카드가 저장되었습니다.");
+  };
 
   return (
-    <div className="result">
-      <h2>🌷 AI 추천 결과 🌷</h2>
-      <img
-        src={result.imageUrl}
-        alt="AI generated flower"
-        className="flower-image"
-      />
-      <p>{result.description}</p>
+    <div className="result fade-in">
+      <img src={result.imageUrl} alt="flower" className="flower-img" />
+
+      <div className="result-text">
+        <ReactMarkdown>{result.text}</ReactMarkdown>
+      </div>
+
+      <div className="result-actions">
+        <button className="reset-btn" onClick={onReset}>🌿 다른 마음 떠올리기</button>
+        <button className="save-btn" onClick={saveCard}>💌 카드 저장하기</button>
+      </div>
     </div>
   );
 }

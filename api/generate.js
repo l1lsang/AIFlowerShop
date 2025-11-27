@@ -1,70 +1,77 @@
 import OpenAI from "openai";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
+  if (req.method !== "POST") 
     return res.status(405).json({ error: "Method not allowed" });
-  }
 
-  const { userData } = req.body;
+  const user = req.body;
 
   const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
   try {
-    // 🌷 1️⃣ 텍스트 설명 생성
-    const prompt = `
-    사용자가 입력한 정보:
-    - 제품: ${userData.product}
-    - 꽃 종류: ${userData.type}
-    - 예산: ${userData.budget}
-    - 색감: ${userData.color}
-    - 상황: ${userData.occasion}
+    // 1) 텍스트
+    const textPrompt = `
+당신은 FLOW의 감정 큐레이터입니다.
+Flow: "마음은 흐르고, 꽃은 피어납니다."
 
-    위 정보를 바탕으로 현재 계절에 어울리는 꽃 조합을 추천하고,
-    꽃들의 꽃말 의미와 감성 설명을 짧게 작성해주세요.
-    `;
+문체: 조용하고 따뜻함. 상업적 어휘 금지.
+
+사용자 정보:
+- 받는 사람: ${user.receiver}
+- 떠오른 장면: ${user.memory}
+- 감정: ${user.emotion}
+- 전달 방식: ${user.tone}
+- 꽃의 형태: ${user.form}
+- 예산: ${user.budget}
+
+아래 형식으로 마크다운으로 출력하세요:
+
+# 🌸 오늘 당신의 마음
+
+(감정을 2~4문장으로 해석 — 관찰 + 비유 중심)
+
+## 💐 어울리는 꽃
+- **꽃 이름** — 꽃말/감정적 의미
+- **꽃 이름** — 감정적 의미
+- **꽃 이름** — 감정적 의미
+
+## ✨ 건네면 좋은 한 문장
+> 짧지만 진심 어린 한 줄
+## 중요: 가격(2만원 미만: 1-3송이, 2-5: 6송이, 5-10: 10송이, 10~ : 10송이 이상)
+`;
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: "user", content: textPrompt }],
+      temperature: 0.75,
     });
 
-    const flowerDescription = completion.choices[0].message.content.trim();
+    const text = completion.choices[0].message.content.trim();
 
-    // 🌸 2️⃣ 이미지 프롬프트 생성
-    const imagePrompt = `
-    A realistic, detailed, soft lighting photo of a ${userData.color} tone bouquet 
-    for ${userData.occasion}, including flowers suitable for ${userData.type}. 
-    Beautiful composition, gentle bokeh background.
-    `;
+    // 2) 이미지
+    const imgPrompt = `
+A realistic premium flower arrangement photo.
+style: ${user.form}
+emotion: ${user.emotion}
+tone: ${user.tone}
+based on memory: "${user.memory}"
+soft natural light, shallow depth, neutral background, editorial shot.
+`;
 
-    // 🌼 3️⃣ 이미지 생성 (b64_json으로 반환됨)
     const image = await client.images.generate({
       model: "gpt-image-1-mini",
-      prompt: imagePrompt,
+      prompt: imgPrompt,
       size: "1024x1024",
     });
 
-    // base64 데이터 추출
-    const imageBase64 = image.data[0]?.b64_json;
+    const base64 = image.data?.[0]?.b64_json;
+    const imageUrl = `data:image/png;base64,${base64}`;
 
-    if (!imageBase64) {
-      console.error("⚠️ 이미지 데이터가 비어 있습니다:", image);
-      return res.status(500).json({ error: "Image generation failed (no data)." });
-    }
-
-    // 브라우저에서 표시 가능한 data URL로 변환
-    const imageUrl = `data:image/png;base64,${imageBase64}`;
-
-    // 🌻 4️⃣ 결과 반환
-    res.status(200).json({
-      description: flowerDescription,
-      imageUrl,
-    });
-
-  } catch (error) {
-    console.error("❌ Error generating flower or image:", error);
-    res.status(500).json({ error: "AI request failed." });
+    return res.status(200).json({ text, imageUrl });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "AI request failed" });
   }
 }
