@@ -1,17 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { BrowserRouter, Navigate } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+function RootWrapper() {
+  const [user, setUser] = useState(undefined);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+    });
+    return () => unsub();
+  }, []);
+
+  // 아직 로그인 상태 확인 전이면
+  if (user === undefined) return <p>로딩중...</p>;
+
+  // 로그인 안됨 → 자동 /login 이동
+  if (!user) return <Navigate to="/login" replace />;
+
+  // 로그인됨 → App 정상 실행
+  return <App />;
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <BrowserRouter>
+    <RootWrapper />
+  </BrowserRouter>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
