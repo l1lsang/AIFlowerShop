@@ -490,7 +490,6 @@ button {
   padding: 20px;
   background: #fff7f9;
   min-height: 100vh;
-  font-family: 'Nanum Pen Script', cursive;
 }
 
 /* 카드 영역 */
@@ -595,3 +594,108 @@ button {
 .error-page h2 {
   margin-bottom: 20px;
 }
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #fff7f9;
+  min-height: 100vh;
+  font-family: 'Nanum Pen Script', cursive;
+}
+
+.flow-card {
+  width: 320px;
+  max-width: 90vw;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.flow-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #ff6eb4;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+/* 마크다운 태그 스타일 */
+.card-description h1, .card-description h2 {
+  color: #ff6eb4;
+  margin-bottom: 8px;
+}
+
+.card-description ul {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.card-description blockquote {
+  border-left: 3px solid #ffc0dc;
+  padding-left: 10px;
+  color: #555;
+  font-style: italic;
+}
+
+.result-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.result-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn { background: #ffd6e7; color: #c43e82; }
+.save-btn:hover { background: #ffc0dc; }
+
+.garden-btn { background: #c4f0d4; color: #2a8f5c; }
+.garden-btn:hover { background: #a1e7b5; }
+
+.again-btn { background: #ffeaa7; color: #d49b00; }
+.again-btn:hover { background: #ffdf70; }
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  color: #555;
+}
+.error-page h2 { margin-bottom: 20px; }

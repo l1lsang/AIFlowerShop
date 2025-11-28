@@ -3,13 +3,15 @@ import React, { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { auth, db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
+import { ref, uploadString, uploadBytes, getDownloadURL } from "firebase/storage";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 export default function FlowerResult({ result, onReset }) {
   const cardRef = useRef();
   const [saving, setSaving] = useState(false);
 
-  if (!result) {
+  if (!result || !result.imageUrl || !result.text) {
     return (
       <div className="error-page">
         <h2>⚠️ 결과를 불러올 수 없어요</h2>
@@ -63,7 +65,7 @@ export default function FlowerResult({ result, onReset }) {
       const downloadURL = await getDownloadURL(storageRef);
 
       await addDoc(collection(db, "users", user.uid, "cards"), {
-        description: result.text,
+        description: result.text || "🌸 마음을 담은 꽃 카드",
         imageUrl: downloadURL,
         createdAt: serverTimestamp(),
       });
@@ -85,7 +87,13 @@ export default function FlowerResult({ result, onReset }) {
         <img className="card-img" src={result.imageUrl} alt="flower" />
         <div className="card-body">
           <h2 className="card-title">🌸 Today's Flow</h2>
-          <div className="card-description">{result.text}</div>
+
+          {/* 마크다운 렌더링 */}
+          <div className="card-description">
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+              {result.text}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
 
