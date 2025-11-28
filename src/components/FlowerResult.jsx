@@ -1,5 +1,5 @@
 // src/components/FlowerResult.jsx
-
+import { useLocation } from "react-router-dom";
 import React, { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { auth, db, storage } from "../firebase";
@@ -9,7 +9,16 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 export default function FlowerResult({ result, onReset }) {
   const cardRef = useRef();
   const [saving, setSaving] = useState(false);
+const { state } = useLocation();
+  const result = state?.result;
 
+  if (!result) {
+    return (
+      <div className="error-page">
+        <h2>⚠️ 결과를 불러올 수 없어요</h2>
+        <a href="/">다시 Flow 시작</a>
+      </div>
+    );}
   // ===============================
   // 📥 카드 PNG 다운로드
   // ===============================
