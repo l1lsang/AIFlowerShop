@@ -51,19 +51,26 @@ export default function SavedCards({ onBack }) {
 
   return (
     <div className="card-page">
-      {/* 뒤로가기 */}
-      <button className="back-btn" onClick={onBack}>⬅️ 돌아가기</button>
+{/* 뒤로가기 버튼 */}
+<button className="back-btn" onClick={onBack}>⬅ 돌아가기</button>
 
-      <h2>🌷 My Flow Garden</h2>
-      <p className="card-sub">당신의 마음이 피어났던 순간들</p>
+<h2 className="garden-title">🌷 My Flow Garden</h2>
+<p className="garden-sub">당신의 마음이 피어났던 순간들</p>
 
-      {/* 빈 상태 */}
-      {cards.length === 0 && (
-        <p className="empty-text">
-          아직 정원에 꽃이 없어요 🌱  
-          Flow를 통해 마음을 심어보세요 🌸
-        </p>
-      )}
+{/* 빈 상태 */}
+{cards.length === 0 && (
+  <div className="empty-box fade-in">
+    <p className="empty-title">아직 정원이 비어 있어요 🌱</p>
+    <p className="empty-desc">
+      마음을 담아 꽃을 추천받고  
+      당신만의 작은 정원을 채워보세요 🌸
+    </p>
+
+    <a href="/" className="gradient-btn">
+      🌼 꽃 추천 받으러 가기
+    </a>
+  </div>
+)}
 
       {/* 카드 그리드 */}
       <div className="card-list">

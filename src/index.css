@@ -320,3 +320,95 @@ button {
 .fow{
   text-align: center;
 }
+/* 전체 제목 */
+.garden-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #a066ff, #ff7bd1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 작은 부제목 */
+.garden-sub {
+  text-align: center;
+  font-size: 15px;
+  color: #888;
+  margin-bottom: 28px;
+}
+
+/* 빈 상태 박스 */
+.empty-box {
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(180, 80, 220, 0.15);
+  max-width: 340px;
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease;
+}
+
+/* 빈 상태 제목 */
+.empty-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+/* 설명 */
+.empty-desc {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+/* 그라데이션 버튼 */
+.gradient-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #a066ff, #ff7bd1);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(170, 80, 220, 0.35);
+  transition: 0.25s ease;
+}
+
+.gradient-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(170, 80, 220, 0.45);
+}
+
+/* 뒤로가기 버튼 */
+.back-btn {
+  background: none;
+  border: none;
+  color: #a066ff;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  color: #ff7bd1;
+  transform: translateX(-4px);
+}
+
+/* Fade animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
