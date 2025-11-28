@@ -51,26 +51,25 @@ export default function SavedCards({ onBack }) {
 
   return (
     <div className="card-page">
-{/* 뒤로가기 버튼 */}
-<button className="back-btn" onClick={onBack}>⬅ 돌아가기</button>
+      <button className="back-btn" onClick={onBack}>⬅ 돌아가기</button>
 
-<h2 className="garden-title">🌷 My Flow Garden</h2>
-<p className="garden-sub">당신의 마음이 피어났던 순간들</p>
+      <h2 className="garden-title">🌷 My Flow Garden</h2>
+      <p className="garden-sub">당신의 마음이 피어났던 순간들</p>
 
-{/* 빈 상태 */}
-{cards.length === 0 && (
-  <div className="empty-box fade-in">
-    <p className="empty-title">아직 정원이 비어 있어요 🌱</p>
-    <p className="empty-desc">
-      마음을 담아 꽃을 추천받고  
-      당신만의 작은 정원을 채워보세요 🌸
-    </p>
+      {/* 빈 상태 */}
+      {cards.length === 0 && (
+        <div className="empty-box fade-in">
+          <p className="empty-title">아직 정원이 비어 있어요 🌱</p>
+          <p className="empty-desc">
+            마음을 담아 꽃을 추천받고  
+            당신만의 작은 정원을 채워보세요 🌸
+          </p>
 
-    <a href="/" className="gradient-btn">
-      🌼 꽃 추천 받으러 가기
-    </a>
-  </div>
-)}
+          <a href="/" className="gradient-btn">
+            🌼 꽃 추천 받으러 가기
+          </a>
+        </div>
+      )}
 
       {/* 카드 그리드 */}
       <div className="card-list">
@@ -86,9 +85,13 @@ export default function SavedCards({ onBack }) {
               <div className="image-placeholder">🌸</div>
             )}
 
-            {/* 🔥 프리뷰 Only (첫 78자) */}
+            {/* 🔥 프리뷰: 마크다운 일부만 렌더링 */}
             <div className="card-preview">
-              {card.description.slice(0, 78)}...
+              <ReactMarkdown>
+                {card.description.length > 78
+                  ? card.description.slice(0, 78) + "..."
+                  : card.description}
+              </ReactMarkdown>
             </div>
 
             <div className="card-meta">
@@ -128,9 +131,11 @@ export default function SavedCards({ onBack }) {
 
             <h3>🌸 My Flow</h3>
 
-            <ReactMarkdown className="modal-text">
-              {selectedCard.description}
-            </ReactMarkdown>
+            <div className="modal-text">
+              <ReactMarkdown>
+                {selectedCard.description}
+              </ReactMarkdown>
+            </div>
 
             <p className="modal-date">
               {selectedCard.createdAt?.toDate?.().toLocaleString()}
