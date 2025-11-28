@@ -12,6 +12,7 @@ html, body {
   background: #F5F1EA;
   color: #1F1B17;
   min-height: 100vh;
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif !important; 
 }
 
 button {
@@ -526,6 +527,7 @@ button {
   font-size: 22px;
   margin-bottom: 10px;
   color: #ff6eb4;
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
 }
 
 .card-description {
@@ -533,6 +535,7 @@ button {
   color: #555;
   line-height: 1.4;
   white-space: pre-wrap;
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
 }
 
 /* 버튼 영역 */
