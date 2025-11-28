@@ -1,10 +1,11 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 추가
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider, db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 
 export default function Login() {
+  const navigate = useNavigate(); // 추가
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
@@ -12,6 +13,7 @@ export default function Login() {
   const loginEmail = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, pw);
+      navigate("/"); // 로그인 성공 시 이동
     } catch {
       setErr("이메일 또는 비밀번호 오류");
     }
@@ -24,13 +26,11 @@ export default function Login() {
 
       await setDoc(
         doc(db, "users", user.uid),
-        {
-          email: user.email,
-          name: user.displayName,
-          createdAt: new Date(),
-        },
+        { email: user.email, name: user.displayName, createdAt: new Date() },
         { merge: true }
       );
+
+      navigate("/"); // Google 로그인 성공 시 이동
     } catch {
       setErr("Google 로그인 실패");
     }
@@ -42,16 +42,8 @@ export default function Login() {
       <p className="flow-sub">마음은 흐르고, 꽃은 피어납니다.</p>
 
       <div className="auth-box">
-        <input
-          placeholder="이메일"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="비밀번호"
-          onChange={(e) => setPw(e.target.value)}
-        />
+        <input placeholder="이메일" onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" placeholder="비밀번호" onChange={(e) => setPw(e.target.value)} />
 
         <button className="btn-primary" onClick={loginEmail}>
           정원 입장하기
