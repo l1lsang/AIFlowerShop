@@ -83,8 +83,8 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
     <div className="flow-chat fade-in">
 
       {/* 🔥 상단 헤더 추가 */}
+      <h1 className="flow-logo fow">Flow</h1>
       <div className="flow-top-bar">
-        <h1 className="flow-logo">Flow</h1>
         <button className="pretty-btn" onClick={() => navigate("/garden")}>
           🌿 나의 정원
         </button>
