@@ -954,3 +954,8 @@ button {
     min-height: 50px;
   }
 }
+* {
+  box-sizing: border-box;
+  font-family: "Pretendard", sans-serif !important;
+
+}
