@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { auth, db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
 
 export default function FlowerResult({ result, onReset }) {
   const cardRef = useRef();
@@ -17,6 +17,7 @@ export default function FlowerResult({ result, onReset }) {
       </div>
     );
   }
+
   // ===============================
   // 📥 카드 PNG 다운로드
   // ===============================
@@ -48,27 +49,24 @@ export default function FlowerResult({ result, onReset }) {
     setSaving(true);
 
     try {
-      // 1) Firebase Storage 업로드
-      const storageRef = ref(
-        storage,
-        `users/${user.uid}/cards/${Date.now()}.png`
-      );
+      const storageRef = ref(storage, `users/${user.uid}/cards/${Date.now()}.png`);
 
-      // base64 이미지 업로드
-      await uploadString(storageRef, result.imageUrl, "data_url");
+      // base64인지 URL인지 확인 후 업로드
+      if (result.imageUrl.startsWith("data:")) {
+        await uploadString(storageRef, result.imageUrl, "data_url");
+      } else {
+        const response = await fetch(result.imageUrl);
+        const blob = await response.blob();
+        await uploadBytes(storageRef, blob);
+      }
 
-      // 2) Storage URL 가져오기
       const downloadURL = await getDownloadURL(storageRef);
 
-      // 3) Firestore 저장
-      await addDoc(
-        collection(db, "users", user.uid, "cards"),
-        {
-          description: result.description,
-          imageUrl: downloadURL,
-          createdAt: serverTimestamp(),
-        }
-      );
+      await addDoc(collection(db, "users", user.uid, "cards"), {
+        description: result.description,
+        imageUrl: downloadURL,
+        createdAt: serverTimestamp(),
+      });
 
       alert("🌸 정원에 카드가 심어졌어요!");
     } catch (err) {
@@ -82,34 +80,22 @@ export default function FlowerResult({ result, onReset }) {
   return (
     <div className="result-container">
 
-      {/* ===============================
-           🌸 카드 영역 (캡쳐 대상)
-      =============================== */}
+      {/* 🌸 카드 영역 (캡쳐 대상) */}
       <div className="flow-card" ref={cardRef}>
         <img className="card-img" src={result.imageUrl} alt="flower" />
-
         <div className="card-body">
           <h2 className="card-title">🌸 Today's Flow</h2>
-
-          <div className="card-description">
-            {result.description}
-          </div>
+          <div className="card-description">{result.description}</div>
         </div>
       </div>
 
-      {/* ===============================
-          버튼 UI
-      =============================== */}
+      {/* 버튼 UI */}
       <div className="result-actions">
         <button className="save-btn" onClick={handleDownload}>
           📥 카드 다운로드
         </button>
 
-        <button
-          className="garden-btn"
-          onClick={handleSaveToDB}
-          disabled={saving}
-        >
+        <button className="garden-btn" onClick={handleSaveToDB} disabled={saving}>
           {saving ? "🌱 저장 중..." : "🌷 정원에 심기"}
         </button>
 
