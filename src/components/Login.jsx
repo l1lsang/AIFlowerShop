@@ -22,30 +22,53 @@ export default function Login() {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        email: user.email,
-        name: user.displayName,
-        createdAt: new Date(),
-      }, { merge: true });
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          email: user.email,
+          name: user.displayName,
+          createdAt: new Date(),
+        },
+        { merge: true }
+      );
     } catch {
       setErr("Google 로그인 실패");
     }
   };
 
   return (
-    <div className="login-wrap">
+    <div className="auth-wrap">
       <h1 className="flow-logo">Flow</h1>
       <p className="flow-sub">마음은 흐르고, 꽃은 피어납니다.</p>
 
-      <input placeholder="이메일" onChange={(e)=>setEmail(e.target.value)} />
-      <input type="password" placeholder="비밀번호" onChange={(e)=>setPw(e.target.value)} />
+      <div className="auth-box">
+        <input
+          placeholder="이메일"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <button onClick={loginEmail}>정원 입장하기</button>
-      <button onClick={loginGoogle}>🌼 Google 계정으로 시작</button>
+        <input
+          type="password"
+          placeholder="비밀번호"
+          onChange={(e) => setPw(e.target.value)}
+        />
+
+        <button className="btn-primary" onClick={loginEmail}>
+          정원 입장하기
+        </button>
+
+        <button className="btn-google" onClick={loginGoogle}>
+          🌼 Google 계정으로 시작
+        </button>
+      </div>
 
       {err && <p className="error-msg">{err}</p>}
 
-      <a href="/signup">🌱 회원가입</a>
+      <div className="auth-link">
+        <a href="/signup">
+          <span>🌱 회원가입</span>
+        </a>
+      </div>
     </div>
   );
 }
