@@ -63,7 +63,7 @@ export default function FlowerResult({ result, onReset }) {
       const downloadURL = await getDownloadURL(storageRef);
 
       await addDoc(collection(db, "users", user.uid, "cards"), {
-        description: result.description,
+        description: result.text,
         imageUrl: downloadURL,
         createdAt: serverTimestamp(),
       });
@@ -85,7 +85,7 @@ export default function FlowerResult({ result, onReset }) {
         <img className="card-img" src={result.imageUrl} alt="flower" />
         <div className="card-body">
           <h2 className="card-title">🌸 Today's Flow</h2>
-          <div className="card-description">{result.description}</div>
+          <div className="card-description">{result.text}</div>
         </div>
       </div>
 
