@@ -262,3 +262,59 @@ button {
   text-align: center;
   padding: 60px 24px;
 }
+.pretty-btn {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ff8a9b, #ff5f85);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(255, 95, 133, 0.35);
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
+}
+
+/* 호버 시 반짝 */
+.pretty-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(255, 95, 133, 0.45);
+  background: linear-gradient(135deg, #ff9bb1, #ff4e72);
+}
+
+/* 클릭 순간 👇 움찔 */
+.pretty-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(255, 95, 133, 0.35);
+}
+/* 상단 헤더 */
+.flow-top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  box-sizing: border-box;
+}
+
+.top-btn {
+  background: #f0f4f0;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.top-btn:hover {
+  background: #e2e8e2;
+}
+
+.logout {
+  background: #ffe8e8;
+}
+
+.logout:hover {
+  background: #ffd4d4;
+}

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
@@ -47,11 +50,16 @@ const steps = [
 
 export default function ChatFlow({ step, onNext, onGenerate }) {
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
 
   const current = steps.find((s) => s.id === step);
 
-  // 1️⃣ step 범위 초과 방어
   if (!current) return null;
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
 
   const handleNext = () => {
     if (!input) return;
@@ -67,15 +75,28 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
 
   const handleOptionClick = (option) => {
     setInput(option);
-    // 선택 즉시 넘어감 (UX↑)
     onNext(current.key, option);
     if (step === steps.length) onGenerate();
   };
 
   return (
     <div className="flow-chat fade-in">
+
+      {/* 🔥 상단 헤더 추가 */}
+      <div className="flow-top-bar">
+        <button className="pretty-btn" onClick={() => navigate("/garden")}>
+          🌿 나의 정원
+        </button>
+
+        <button className="top-btn logout" onClick={handleLogout}>
+          로그아웃
+        </button>
+      </div>
+
+      {/* 질문 */}
       <p className="flow-question">{current.question}</p>
 
+      {/* 텍스트 입력 */}
       {current.type === "text" && (
         <input
           className="flow-input"
@@ -85,6 +106,7 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         />
       )}
 
+      {/* 옵션 선택 */}
       {current.type === "options" && (
         <div className="flow-options">
           {current.options.map((option) => (
@@ -99,6 +121,7 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </div>
       )}
 
+      {/* 다음 버튼 */}
       {current.type === "text" && (
         <button className="flow-next" disabled={!input} onClick={handleNext}>
           다음 →
