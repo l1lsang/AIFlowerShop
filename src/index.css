@@ -1,13 +1,264 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* =========================
+   RESET
+========================= */
+* {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard", sans-serif;
+  background: #F5F1EA;
+  color: #1F1B17;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* =========================
+   GLOBAL LAYOUT
+========================= */
+.App {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.flow-logo {
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.flow-sub {
+  font-size: 15px;
+  opacity: 0.75;
+  margin-bottom: 42px;
+}
+
+/* =========================
+   LOGIN / SIGNUP
+========================= */
+.login-wrap, .auth-wrap {
+  max-width: 420px;
+  margin: 80px auto;
+  background: rgba(255,255,255,0.88);
+  padding: 32px 26px;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.08);
+  text-align: center;
+  animation: fadeIn .5s ease;
+}
+
+.auth-box, .login-box {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-box input, .login-box input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.8px solid #d6d1c7;
+  background: #fff;
+  font-size: 15px;
+}
+
+.auth-box input:focus, .login-box input:focus {
+  outline: none;
+  border-color: #8FAE9F;
+  box-shadow: 0 0 8px rgba(143,174,159,.35);
+}
+
+.btn-primary {
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  margin-top: 4px;
+  background: #1F1B17;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  transition: .25s ease;
+}
+
+.btn-primary:hover {
+  opacity: .9;
+}
+
+.btn-google {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.6px solid #dcd8cf;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.btn-google:hover {
+  background: #fafafa;
+}
+
+.auth-link, .login-link {
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: .7;
+}
+
+.auth-link span, .login-link span {
+  color: #8FAE9F;
+  font-weight: 600;
+}
+
+/* =========================
+   CHAT FLOW
+========================= */
+.flow-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.flow-question {
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.flow-input {
+  padding: 12px 18px;
+  border: none;
+  border-bottom: 1.4px solid #CFC7B5;
+  background: transparent;
+  font-size: 17px;
+}
+
+.flow-input:focus {
+  outline: none;
+  border-bottom: 1.4px solid #8FAE9F;
+}
+
+.flow-options {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flow-option {
+  padding: 10px 16px;
+  border: 1px solid #D5D0C7;
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.flow-option.active {
+  border-color: #8FAE9F;
+  background: rgba(143,174,159,.15);
+}
+
+.flow-next {
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: none;
+  background: #1F1B17;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.flow-next:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* =========================
+   RESULT CARD
+========================= */
+.result-container, .card-page {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.flow-card, .card-item {
+  max-width: 380px;
+  margin: 0 auto 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  text-align: left;
+}
+
+.card-image, .flower-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.card-md {
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.save-btn, .view-cards-btn, .logout-btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.save-btn {
+  background: #F0E5DB;
+}
+
+.view-cards-btn {
+  background: linear-gradient(135deg, #b389ff, #ff99c8);
+  color: white;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1.6px solid #d5d5d5;
+  color: #666;
+}
+
+.save-btn:hover, .view-cards-btn:hover, .logout-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   MISC
+========================= */
+.error-msg {
+  color: #ff4d4d;
+  margin-top: 8px;
+}
+
+.fade-in {
+  animation: fade 0.5s ease forwards;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.splash-wrap {
+  text-align: center;
+  padding: 60px 24px;
 }
