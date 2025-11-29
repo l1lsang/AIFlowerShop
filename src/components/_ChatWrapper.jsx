@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ChatFlow from "./ChatFlow";
 
 export default function ChatWrapper() {
+    console.log("🐣 ChatWrapper 렌더링됨");
+
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({});
   const navigate = useNavigate();

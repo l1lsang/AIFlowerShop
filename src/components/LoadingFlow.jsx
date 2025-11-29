@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function LoadingFlow() {
+  console.log("🌸 LoadingFlow 렌더링됨");
+
   const navigate = useNavigate();
   const location = useLocation();
   const resultData = location.state?.result;
