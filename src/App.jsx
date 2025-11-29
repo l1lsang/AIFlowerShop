@@ -23,6 +23,8 @@ import FlowerResultWrapper from "./components/_FlowerResultWrapper";
 
 export default function App() {
   console.log("🔥 App 렌더링됨");
+  console.log("🧭 현재 path:", window.location.pathname);
+
 
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);

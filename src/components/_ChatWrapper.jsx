@@ -15,6 +15,8 @@ export default function ChatWrapper() {
   };
 
   const handleGenerate = async () => {
+    console.log("🚀 navigate → /loading", data);
+
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
