@@ -15,7 +15,7 @@ export default function ChatWrapper() {
   };
 
   const handleGenerate = async () => {
-    console.log("🚀 navigate → /loading", data);
+    
 
     try {
       const res = await fetch("/api/generate", {
@@ -25,7 +25,7 @@ export default function ChatWrapper() {
       });
 
       const data = await res.json();
-
+      console.log("🚀 navigate → /loading", data);
       navigate("/loading", { state: { result: data } });
     } catch (err) {
       alert("오류 발생");
