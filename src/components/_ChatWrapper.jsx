@@ -1,38 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ChatFlow from "./ChatFlow";
+// ChatWrapper.jsx
+const handleGenerate = async () => {
+  // 로딩 페이지 먼저 띄우기
+  navigate("/loading");
 
-export default function ChatWrapper() {
-  const [step, setStep] = useState(1);
-  const [answers, setAnswers] = useState({});
-  const navigate = useNavigate();
-
-  const handleNext = (key, value) => {
-    setAnswers((prev) => ({ ...prev, [key]: value }));
-    setStep((prev) => prev + 1);
-  };
-
-  const handleGenerate = async () => {
-    try {
-      // LoadingFlow로 바로 이동
-      navigate("/loading", { state: { result: answers } });
-    } catch (err) {
-      console.error("생성 오류:", err);
-    }
-  };
-
-  // 마지막 단계 체크 → 자동 이동
-  useEffect(() => {
-    if (step > 6) {
-      handleGenerate();
-    }
-  }, [step]);
-
-  return (
-    <ChatFlow
-      step={step}
-      onNext={handleNext}
-      onGenerate={handleGenerate}
-    />
-  );
-}
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(answers),
+    });
+    const data = await res.json();
+    // 결과 도착하면 LoadingFlow에서 Result로 이동
+    navigate("/result", { state: { result: data } });
+  } catch (err) {
+    console.error(err);
+    alert("결과 생성 실패");
+  }
+};
