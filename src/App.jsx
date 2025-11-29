@@ -1,12 +1,5 @@
-// src/App.jsx
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
@@ -19,9 +12,6 @@ import SavedCards from "./components/SavedCards";
 import CardDetail from "./components/CardDetail";
 
 export default function App() {
-  console.log("🔥 App 렌더링됨");
-  console.log("🧭 현재 path:", window.location.pathname);
-
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -33,26 +23,19 @@ export default function App() {
     return () => unsub();
   }, []);
 
-  if (authLoading) {
-    return <div>Loading...</div>;
-  }
+  if (authLoading) return <div>Loading...</div>;
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* 로그인/회원가입 */}
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
 
-        {/* 챗 → 로딩 → 결과 */}
         <Route path="/" element={user ? <ChatWrapper /> : <Navigate to="/login" />} />
         <Route path="/loading" element={user ? <LoadingFlow /> : <Navigate to="/login" />} />
         <Route path="/result" element={user ? <FlowerResultWrapper /> : <Navigate to="/login" />} />
-
-        {/* 정원 */}
         <Route path="/garden" element={user ? <SavedCards /> : <Navigate to="/login" />} />
         <Route path="/card/:id" element={user ? <CardDetail /> : <Navigate to="/login" />} />
-
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

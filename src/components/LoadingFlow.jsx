@@ -1,4 +1,3 @@
-// src/components/LoadingFlow.jsx
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -13,19 +12,14 @@ export default function LoadingFlow() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (resultData && resultData.imageUrl) {
-        // result가 있으면 /result로 이동
-        console.log("🌼 navigate → /result", resultData);
-        navigate("/result", { state: { result: resultData } });
-      } else {
-        // result 없으면 홈으로
-        console.log("🌼 navigate → /");
-        navigate("/", { replace: true });
-      }
-    }, 1000); // 원하는 로딩 시간(ms)
+      setFade("fade-out");
 
+      setTimeout(() => {
+        navigate("/result", { state: { result: resultData } });
+      }, 600);
+    }, 500); // 최소 표시 시간
     return () => clearTimeout(timer);
-  }, [resultData, navigate]);
+  }, [resultData]);
 
   return (
     <div className={`loading-screen ${fade}`}>
