@@ -67,15 +67,17 @@ function ChatWrapper() {
 function FlowerResultWrapper() {
   const navigate = useNavigate();
   const location = useLocation();
-  const result = location.state?.result;
+  
+  // 🔥 여기 수정됨!
+  const result = location.state;
 
-  // 새로고침 대비: 데이터 없으면 홈으로
   if (!result || !result.imageUrl) {
     return <Navigate to="/" />;
   }
 
   return <FlowerResult result={result} onReset={() => navigate("/")} />;
 }
+
 
 // ==============================
 // 🌸 메인 App
