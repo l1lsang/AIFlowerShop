@@ -15,7 +15,7 @@ export default function LoadingFlow() {
     // 페이드 아웃 애니메이션
     const timer = setTimeout(() => {
       setFade("fade-out");
-    }, 800); // 잠깐 보여주고 페이드아웃
+    }, 60000); // 잠깐 보여주고 페이드아웃
 
     return () => clearTimeout(timer);
   }, [answers]);
