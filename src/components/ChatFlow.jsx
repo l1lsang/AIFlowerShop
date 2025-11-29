@@ -48,11 +48,12 @@ const steps = [
   },
 ];
 
-export default function ChatFlow({ step, onNext }) {
+export default function ChatFlow({ step, onNext, onGenerate }) {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
 
   const current = steps.find((s) => s.id === step);
+  const isLastStep = step === steps.length;
 
   if (!current) return null;
 
@@ -61,17 +62,29 @@ export default function ChatFlow({ step, onNext }) {
     navigate("/login");
   };
 
+  // 🔥 텍스트 다음 버튼
   const handleNext = () => {
     if (!input) return;
 
     onNext(current.key, input);
 
+    if (isLastStep) {
+      onGenerate(); // 마지막 단계라면 generate 호출
+      return; // input 초기화나 추가 리렌더 방지
+    }
+
     setInput("");
   };
 
+  // 🔥 옵션 클릭
   const handleOptionClick = (option) => {
     setInput(option);
     onNext(current.key, option);
+
+    if (isLastStep) {
+      onGenerate(); // 마지막 단계 옵션 선택 시도 generate
+      return;
+    }
   };
 
   return (
@@ -114,8 +127,12 @@ export default function ChatFlow({ step, onNext }) {
       )}
 
       {current.type === "text" && (
-        <button className="flow-next" disabled={!input} onClick={handleNext}>
-          다음 →
+        <button
+          className="flow-next"
+          disabled={!input}
+          onClick={handleNext}
+        >
+          {isLastStep ? "결과 보기 →" : "다음 →"}
         </button>
       )}
     </div>
