@@ -28,25 +28,24 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
   };
 
   const handleNext = () => {
-    // 텍스트 입력 단계에서 입력 없으면 리턴
     if (current.type === "text" && !input) return;
 
-    // 텍스트 타입이면 입력값 전달
-    if (current.type === "text") {
-      onNext(current.key, input);
-    }
-
-    // 마지막 단계라면 결과 생성 호출
-    if (isLastStep && onGenerate) onGenerate();
+    onNext(current.key, input);
 
     setInput("");
+
+    if (isLastStep && onGenerate) {
+      onGenerate();
+    }
   };
 
   const handleOptionClick = (option) => {
     setInput(option);
     onNext(current.key, option);
 
-    if (isLastStep && onGenerate) onGenerate();
+    if (isLastStep && onGenerate) {
+      onGenerate();
+    }
   };
 
   return (
@@ -83,16 +82,14 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </div>
       )}
 
-      {/* 마지막 단계 버튼 처리 */}
-      {(current.type === "text" || (isLastStep && current.type === "options")) && (
-        <button
-          className="flow-next"
-          disabled={current.type === "text" && !input}
-          onClick={handleNext}
-        >
-          {isLastStep ? "결과 생성 🌸" : "다음 →"}
-        </button>
-      )}
+      {/* 마지막 버튼 */}
+      <button
+        className="flow-next"
+        disabled={current.type === "text" && !input}
+        onClick={handleNext}
+      >
+        {isLastStep ? "결과 생성 🌸" : "다음 →"}
+      </button>
     </div>
   );
 }
