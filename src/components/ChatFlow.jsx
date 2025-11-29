@@ -1,3 +1,4 @@
+// ChatFlow.jsx
 import React, { useState } from "react";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
@@ -17,9 +18,9 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
   const navigate = useNavigate();
 
   const current = steps.find((s) => s.id === step);
-  if (!current) return null;
-
   const isLastStep = step === steps.length;
+
+  if (!current) return null;
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -27,13 +28,16 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
   };
 
   const handleNext = () => {
-    if (!input) return;
+    // 텍스트 입력 단계에서 입력 없으면 리턴
+    if (current.type === "text" && !input) return;
 
-    onNext(current.key, input);
-
-    if (isLastStep && onGenerate) {
-      onGenerate(); // 마지막 단계에서 결과 생성
+    // 텍스트 타입이면 입력값 전달
+    if (current.type === "text") {
+      onNext(current.key, input);
     }
+
+    // 마지막 단계라면 결과 생성 호출
+    if (isLastStep && onGenerate) onGenerate();
 
     setInput("");
   };
@@ -41,6 +45,7 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
   const handleOptionClick = (option) => {
     setInput(option);
     onNext(current.key, option);
+
     if (isLastStep && onGenerate) onGenerate();
   };
 
@@ -78,10 +83,11 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </div>
       )}
 
-      {current.type === "text" && (
+      {/* 마지막 단계 버튼 처리 */}
+      {(current.type === "text" || (isLastStep && current.type === "options")) && (
         <button
           className="flow-next"
-          disabled={!input}
+          disabled={current.type === "text" && !input}
           onClick={handleNext}
         >
           {isLastStep ? "결과 생성 🌸" : "다음 →"}
