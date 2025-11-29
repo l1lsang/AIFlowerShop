@@ -17,7 +17,8 @@ export default function LoadingFlow() {
 
       const timer = setTimeout(() => {
         console.log("🌼 navigate 전 RESULT:", resultData);
-        navigate("/result", { state: resultData });
+        navigate("/result", { state: { result: resultData } });
+
       }, 600); // CSS transition 시간과 맞춤
 
       return () => clearTimeout(timer);

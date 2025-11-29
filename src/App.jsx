@@ -48,7 +48,7 @@ export default function App() {
 
         <Route path="/" element={user ? <ChatWrapper /> : <Navigate to="/login" />} />
 
-        <Route path="/loading" element={user ? <LoadingFlow /> : <Navigate to="/login" />} />
+        <Route path="/loading" element={<LoadingFlow />} />
 
         <Route path="/result" element={user ? <FlowerResultWrapper /> : <Navigate to="/login" />} />
 
