@@ -6,23 +6,21 @@ export default function LoadingFlow() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const resultData = location.state?.result;
+  const resultData = location.state?.result ?? null;
 
-  const [fade, setFade] = useState("fade-in"); // 처음에 페이드 인
+  const [fade, setFade] = useState("fade-in");
 
   useEffect(() => {
-    if (resultData) {
-      // 페이드 아웃 → 애니메이션 끝나면 이동
-      setFade("fade-out");
+    if (!resultData) return; // ⬅ 안전장치 추가
 
-      const timer = setTimeout(() => {
-        console.log("🌼 navigate 전 RESULT:", resultData);
-        navigate("/result", { state: { result: resultData } });
+    setFade("fade-out");
 
-      }, 600); // CSS transition 시간과 맞춤
+    const timer = setTimeout(() => {
+      console.log("🌼 navigate 전 RESULT:", resultData);
+      navigate("/result", { state: { result: resultData } });
+    }, 600);
 
-      return () => clearTimeout(timer);
-    }
+    return () => clearTimeout(timer);
   }, [resultData]);
 
   return (
