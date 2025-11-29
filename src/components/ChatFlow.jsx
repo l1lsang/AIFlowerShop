@@ -48,7 +48,7 @@ const steps = [
   },
 ];
 
-export default function ChatFlow({ step, onNext, onGenerate }) {
+export default function ChatFlow({ step, onNext }) {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
 
@@ -66,24 +66,18 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
 
     onNext(current.key, input);
 
-    if (step === steps.length) {
-      onGenerate();
-    }
-
     setInput("");
   };
 
   const handleOptionClick = (option) => {
     setInput(option);
     onNext(current.key, option);
-    if (step === steps.length) onGenerate();
   };
 
   return (
     <div className="flow-chat fade-in">
-
-      {/* 🔥 상단 헤더 추가 */}
       <h1 className="flow-logo fow">Flow</h1>
+
       <div className="flow-top-bar">
         <button className="pretty-btn" onClick={() => navigate("/garden")}>
           🌿 나의 정원
@@ -94,10 +88,8 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </button>
       </div>
 
-      {/* 질문 */}
       <p className="flow-question">{current.question}</p>
 
-      {/* 텍스트 입력 */}
       {current.type === "text" && (
         <input
           className="flow-input"
@@ -107,7 +99,6 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         />
       )}
 
-      {/* 옵션 선택 */}
       {current.type === "options" && (
         <div className="flow-options">
           {current.options.map((option) => (
@@ -122,7 +113,6 @@ export default function ChatFlow({ step, onNext, onGenerate }) {
         </div>
       )}
 
-      {/* 다음 버튼 */}
       {current.type === "text" && (
         <button className="flow-next" disabled={!input} onClick={handleNext}>
           다음 →
