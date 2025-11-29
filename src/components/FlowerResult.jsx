@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
 export default function FlowerResult({ result, onReset }) {
+  console.log("🌸 FlowerResult 렌더링됨:", result);
   const cardRef = useRef();
   const [saving, setSaving] = useState(false);
 

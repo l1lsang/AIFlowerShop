@@ -68,16 +68,17 @@ function FlowerResultWrapper() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // 🔥 여기 수정됨!
+  console.log("🔥 RESULT WRAPPER STATE:", location.state);
+
   const result = location.state;
 
   if (!result || !result.imageUrl) {
+    console.log("⚠️ result 없음 → 홈으로 이동됨");
     return <Navigate to="/" />;
   }
 
   return <FlowerResult result={result} onReset={() => navigate("/")} />;
 }
-
 
 // ==============================
 // 🌸 메인 App
