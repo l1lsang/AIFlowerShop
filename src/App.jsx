@@ -45,10 +45,11 @@ export default function App() {
 
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
+         <Route path="/loading" element={<LoadingFlow />} />
 
         <Route path="/" element={user ? <ChatWrapper /> : <Navigate to="/login" />} />
 
-        <Route path="/loading" element={<LoadingFlow />} />
+       
 
         <Route path="/result" element={user ? <FlowerResultWrapper /> : <Navigate to="/login" />} />
 
