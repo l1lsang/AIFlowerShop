@@ -24,7 +24,7 @@ export default function LoadingFlow() {
       setTimeout(() => {
         navigate("/result", { state: { result: resultData } });
       }, 600); // CSS 페이드 시간과 맞춤
-    }, 1200); // 로딩창 최소 1.2초 표시
+    }, 80000); // 로딩창 최소 1.2초 표시
     return () => clearTimeout(timer);
   }, [resultData]);
 
